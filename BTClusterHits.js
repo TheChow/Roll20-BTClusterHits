@@ -409,51 +409,51 @@ on("chat:message", function (msg) {
         var hits, isCluster, numShots;
         if (msg.content.indexOf("!c02") !== -1) {
             numShots = 2;
-            hits = BTCluster.Cluster2();
+            hits = BTClusterHits.Cluster2();
             isCluster = true;
         } else if (msg.content.indexOf("!c03") !== -1) {
             numShots = 3;
-            hits = BTCluster.Cluster3();
+            hits = BTClusterHits.Cluster3();
             isCluster = true;
         } else if (msg.content.indexOf("!c04") !== -1) {
             numShots = 4;
-            hits = BTCluster.Cluster4();
+            hits = BTClusterHits.Cluster4();
             isCluster = true;
         } else if (msg.content.indexOf("!c05") !== -1) {
             numShots = 5;
-            hits = BTCluster.Cluster5();
+            hits = BTClusterHits.Cluster5();
             isCluster = true;
         } else if (msg.content.indexOf("!c06") !== -1) {
             numShots = 6;
-            hits = BTCluster.Cluster6();
+            hits = BTClusterHits.Cluster6();
             isCluster = true;
         } else if (msg.content.indexOf("!c07") !== -1) {
             numShots = 7;
-            hits = BTCluster.Cluster7();
+            hits = BTClusterHits.Cluster7();
             isCluster = true;
         } else if (msg.content.indexOf("!c09") !== -1) {
             numShots = 9;
-            hits = BTCluster.Cluster9();
+            hits = BTClusterHits.Cluster9();
             isCluster = true;
         } else if (msg.content.indexOf("!c10") !== -1) {
             numShots = 10;
-            hits = BTCluster.Cluster10();
+            hits = BTClusterHits.Cluster10();
             isCluster = true;
         } else if (msg.content.indexOf("!c15") !== -1) {
             numShots = 15;
-            hits = BTCluster.Cluster15();
+            hits = BTClusterHits.Cluster15();
             isCluster = true;
         } else if (msg.content.indexOf("!c20") !== -1) {
             numShots = 20;
-            hits = BTCluster.Cluster20();
+            hits = BTClusterHits.Cluster20();
             isCluster = true;
         } else if (msg.content.indexOf("!c30") !== -1) {
             numShots = 30;
-            hits = BTCluster.Cluster30();
+            hits = BTClusterHits.Cluster30();
             isCluster = true;
         } else if (msg.content.indexOf("!c40") !== -1) {
             numShots = 40;
-            hits = BTCluster.Cluster40();
+            hits = BTClusterHits.Cluster40();
             isCluster = true;
         }
 
@@ -462,96 +462,25 @@ on("chat:message", function (msg) {
             var hitLocCallback, hitTarget;
             switch (loc) {
                 case "l":
-                    hitLocCallback = BTHitLoc.ShootLeft(hits);
+                    hitLocCallback = BTHitLocation.ShootLeft(hits);
                     hitTarget = "Left arc";
                     break;
                 case "r":
-                    hitLocCallback = BTHitLoc.ShootRight(hits);
+                    hitLocCallback = BTHitLocation.ShootRight(hits);
                     hitTarget = "Right arc";
                     break;
                 case "f":
                 default:
-                    hitLocCallback = BTHitLoc.ShootFront(hits);
+                    hitLocCallback = BTHitLocation.ShootFront(hits);
                     hitTarget = "Front/Back arc";
                     break;
             }
+            var hist = {};
+            var res = hitLocCallback;
             
-            sendChat(msg.who, numShots + " shots to " + hitTarget + " with " + hits + " hits at: " + hitLocCallback);
+            res.forEach(function (a) { if (a in hist) hist[a] ++; else hist[a] = 1; })
+            sendChat(msg.who, numShots + " shots to " + hitTarget + " with " + hits + " hits at: " + JSON.stringify(hist).replace(/\"/g, "").replace("{", "").replace("}", ""));
             
         }
     }
 });
-
-/*
-on("chat:message", function(msg) {
-  //This allows players to enter !sr <number> to roll a number of d6 dice with a target of 4.
-  if(msg.type == "api" && msg.content.indexOf("!c3") !== -1) {
-    sendChat(msg.who, BTCluster.Cluster3() + " hits");
-  }
-});
-on("chat:message", function(msg) {
-  //This allows players to enter !sr <number> to roll a number of d6 dice with a target of 4.
-  if(msg.type == "api" && msg.content.indexOf("!c04") !== -1) {
-    sendChat(msg.who, BTCluster.Cluster4() + " hits");
-  }
-});
-on("chat:message", function(msg) {
-  //This allows players to enter !sr <number> to roll a number of d6 dice with a target of 4.
-  if(msg.type == "api" && msg.content.indexOf("!c5") !== -1) {
-    sendChat(msg.who, BTCluster.Cluster5() + " hits");
-  }
-});
-on("chat:message", function(msg) {
-  //This allows players to enter !sr <number> to roll a number of d6 dice with a target of 4.
-  if(msg.type == "api" && msg.content.indexOf("!c6") !== -1) {
-    sendChat(msg.who, BTCluster.Cluster6() + " hits");
-  }
-});
-on("chat:message", function(msg) {
-  //This allows players to enter !sr <number> to roll a number of d6 dice with a target of 4.
-  if(msg.type == "api" && msg.content.indexOf("!c7") !== -1) {
-    sendChat(msg.who, BTCluster.Cluster7() + " hits");
-  }
-});
-on("chat:message", function(msg) {
-  //This allows players to enter !sr <number> to roll a number of d6 dice with a target of 4.
-  if(msg.type == "api" && msg.content.indexOf("!c9") !== -1) {
-    sendChat(msg.who, BTCluster.Cluster9() + " hits");
-  }
-});
-on("chat:message", function(msg) {
-  //This allows players to enter !sr <number> to roll a number of d6 dice with a target of 4.
-  if(msg.type == "api" && msg.content.indexOf("!c10") !== -1) {
-    sendChat(msg.who, BTCluster.Cluster10() + " hits");
-  }
-});
-on("chat:message", function(msg) {
-  //This allows players to enter !sr <number> to roll a number of d6 dice with a target of 4.
-  if(msg.type == "api" && msg.content.indexOf("!c12") !== -1) {
-    sendChat(msg.who, BTCluster.Cluster12() + " hits");
-  }
-});
-on("chat:message", function(msg) {
-  //This allows players to enter !sr <number> to roll a number of d6 dice with a target of 4.
-  if(msg.type == "api" && msg.content.indexOf("!c15") !== -1) {
-    sendChat(msg.who, BTCluster.Cluster15() + " hits");
-  }
-});
-on("chat:message", function(msg) {
-  //This allows players to enter !sr <number> to roll a number of d6 dice with a target of 4.
-  if(msg.type == "api" && msg.content.indexOf("!c20") !== -1) {
-    sendChat(msg.who, BTCluster.Cluster20() + " hits");
-  }
-});
-on("chat:message", function(msg) {
-  //This allows players to enter !sr <number> to roll a number of d6 dice with a target of 4.
-  if(msg.type == "api" && msg.content.indexOf("!c30") !== -1) {
-    sendChat(msg.who, BTCluster.Cluster30() + " hits");
-  }
-});
-on("chat:message", function(msg) {
-  //This allows players to enter !sr <number> to roll a number of d6 dice with a target of 4.
-  if(msg.type == "api" && msg.content.indexOf("!c40") !== -1) {
-    sendChat(msg.who, BTCluster.Cluster40() + " hits");
-  }
-});*/
