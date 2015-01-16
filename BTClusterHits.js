@@ -475,12 +475,9 @@ on("chat:message", function (msg) {
                     hitTarget = "Front/Back arc";
                     break;
             }
-            var hist = {};
-            var res = hitLocCallback;
-            
-            res.forEach(function (a) { if (a in hist) hist[a] ++; else hist[a] = 1; })
-            sendChat(msg.who, numShots + " shots to " + hitTarget + " with " + hits + " hits at: " + JSON.stringify(hist).replace(/\"/g, "").replace("{", "").replace("}", ""));
-            
+            var hist = {};           
+            hitLocCallback.forEach(function (a) { if (a in hist) hist[a] ++; else hist[a] = 1; })
+            sendChat(msg.who, numShots + " shots to " + hitTarget + " with " + hits + " hits at: " + JSON.stringify(hist).replace(/\"/g, "").replace("{", "").replace("}", ""));       
         }
     }
 });
