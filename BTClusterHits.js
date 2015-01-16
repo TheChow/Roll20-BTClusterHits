@@ -439,6 +439,10 @@ on("chat:message", function (msg) {
             numShots = 10;
             hits = BTClusterHits.Cluster10();
             isCluster = true;
+        } else if (msg.content.indexOf("!c12") !== -1) {
+            numShots = 12;
+            hits = BTClusterHits.Cluster12();
+            isCluster = true;
         } else if (msg.content.indexOf("!c15") !== -1) {
             numShots = 15;
             hits = BTClusterHits.Cluster15();
@@ -476,8 +480,8 @@ on("chat:message", function (msg) {
                     break;
             }
             var hist = {};           
-            hitLocCallback.forEach(function (a) { if (a in hist) hist[a] ++; else hist[a] = 1; })
-            sendChat(msg.who, numShots + " shots to " + hitTarget + " with " + hits + " hits at: " + JSON.stringify(hist).replace(/\"/g, "").replace("{", "").replace("}", ""));       
+            hitLocCallback.forEach(function (a) { if (a in hist) hist[a] ++; else hist[a] = 1; })            
+            sendChat(msg.who, numShots + " shots to " + hitTarget + " with " + hits + " hits at: " + JSON.stringify(hist).replace(/\"/g, "").replace("{", "").replace("}", "").replace(/([\w]+):(\d)/g, "$2x $1"));       
         }
     }
 });
