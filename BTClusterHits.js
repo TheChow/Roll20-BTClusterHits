@@ -1,523 +1,115 @@
 var BTClusterHits = BTClusterHits || (function () {
-
-    function cluster2() {
-        var roll = randomInteger(6) + randomInteger(6);
-        var num_hits;
-        switch (roll) {
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-                num_hits = 1;
-                break;
-            case 8:
-            case 9:
-            case 10:
-            case 11:
-            case 12:
-                num_hits = 2;
-                break;
-            default:
-                num_hits = 0;
-        }
-        return num_hits;
-    }
-
-    function cluster3() {
-        var roll = randomInteger(6) + randomInteger(6);
-        var num_hits;
-        switch (roll) {
-            case 2:
-            case 3:
-            case 4:
-                num_hits = 1;
-                break;
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-            case 9:
-                num_hits = 2;
-                break;
-            case 10:
-            case 11:
-            case 12:
-                num_hits = 3;
-                break;
-            default:
-                num_hits = 0;
-        }
-        return num_hits;
-    }
-
-    function cluster4() {
-        var roll = randomInteger(6) + randomInteger(6);
-        var num_hits;
-        switch (roll) {
-            case 2:
-                num_hits = 1;
-                break;
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-                num_hits = 2;
-                break;
-            case 7:
-            case 8:
-            case 9:
-            case 10:
-                num_hits = 3;
-                break;
-            case 11:
-            case 12:
-                num_hits = 4;
-                break;
-            default:
-                num_hits = 0;
-        }
-        return num_hits;
-    }
-
-    function cluster5() {
-        var roll = randomInteger(6) + randomInteger(6);
-        var num_hits;
-        switch (roll) {
-            case 2:
-                num_hits = 1;
-                break;
-            case 3:
-            case 4:
-                num_hits = 2;
-                break;
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-                num_hits = 3;
-                break;
-            case 9:
-            case 10:
-                num_hits = 4;
-                break;
-            case 11:
-            case 12:
-                num_hits = 5;
-                break;
-            default:
-                num_hits = 0;
-        }
-        return num_hits;
-    }
-
-    function cluster6() {
-        var roll = randomInteger(6) + randomInteger(6);
-        var num_hits;
-        switch (roll) {
-            case 2:
-            case 3:
-                num_hits = 2;
-                break;
-            case 4:
-            case 5:
-                num_hits = 3;
-                break;
-            case 6:
-            case 7:
-            case 8:
-                num_hits = 4;
-                break;
-            case 9:
-            case 10:
-                num_hits = 5;
-                break;
-            case 11:
-            case 12:
-                num_hits = 6;
-                break;
-            default:
-                num_hits = 0;
-        }
-        return num_hits;
-    }
-
-    function cluster7() {
-        var roll = randomInteger(6) + randomInteger(6);
-        var num_hits;
-        switch (roll) {
-            case 2:
-            case 3:
-                num_hits = 2;
-                break;
-            case 4:
-                num_hits = 3;
-                break;
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-                num_hits = 4;
-                break;
-            case 9:
-            case 10:
-                num_hits = 6;
-                break;
-            case 11:
-            case 12:
-                num_hits = 7;
-                break;
-            default:
-                num_hits = 0;
-        }
-        return num_hits;
-    }
-
-     function cluster9() {
-        var roll = randomInteger(6) + randomInteger(6);
-        var num_hits;
-        switch (roll) {
-            case 2:
-            case 3:
-                num_hits = 3;
-                break;
-            case 4:
-                num_hits = 4;
-                break;
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-                num_hits = 5;
-                break;
-            case 9:
-            case 10:
-                num_hits = 7;
-                break;
-            case 11:
-            case 12:
-                num_hits = 9;
-                break;
-            default:
-                num_hits = 0;
-        }
-        return num_hits;
-    }
-
-     function cluster10() {
-        var roll = randomInteger(6) + randomInteger(6);
-        var num_hits;
-        switch (roll) {
-            case 2:
-            case 3:
-                num_hits = 3;
-                break;
-            case 4:
-                num_hits = 4;
-                break;
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-                num_hits = 6;
-                break;
-            case 9:
-            case 10:
-                num_hits = 8;
-                break;
-            case 11:
-            case 12:
-                num_hits = 10;
-                break;
-            default:
-                num_hits = 0;
-        }
-        return num_hits;
-    }
-
-    function cluster12() {
-        var roll = randomInteger(6) + randomInteger(6);
-        var num_hits;
-        switch (roll) {
-            case 2:
-            case 3:
-                num_hits = 4;
-                break;
-            case 4:
-                num_hits = 5;
-                break;
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-                num_hits = 8;
-                break;
-            case 9:
-            case 10:
-                num_hits = 10;
-                break;
-            case 11:
-            case 12:
-                num_hits = 12;
-                break;
-            default:
-                num_hits = 0;
-        }
-        return num_hits;
-    }
     
-    function cluster15() {
-        var roll = randomInteger(6) + randomInteger(6);
-        var num_hits;
-        switch (roll) {
-            case 2:
-            case 3:
-                num_hits = 5;
-                break;
-            case 4:
-                num_hits = 6;
-                break;
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-                num_hits = 9;
-                break;
-            case 9:
-            case 10:
-                num_hits = 12;
-                break;
-            case 11:
-            case 12:
-                num_hits = 15;
-                break;
-            default:
-                num_hits = 0;
-        }
-        return num_hits;
-    }
-
-    function cluster20() {
-        var roll = randomInteger(6) + randomInteger(6);
-        var num_hits = 0;
-        switch (roll) {
-            case 2:
-            case 3:
-                num_hits = 6;
-                break;
-            case 4:
-                num_hits = 9;
-                break;
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-                num_hits = 12;
-                break;
-            case 9:
-            case 10:
-                num_hits = 16;
-                break;
-            case 11:
-            case 12:
-                num_hits = 20;
-                break;
-            default:
-                num_hits = 0;
-        }
-        return num_hits;
-    }
-
-    function cluster30() {
-        var roll = randomInteger(6) + randomInteger(6);
-        var num_hits;
-        switch (roll) {
-            case 2:
-            case 3:
-                num_hits = 10;
-                break;
-            case 4:
-                num_hits = 12;
-                break;
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-                num_hits = 18;
-                break;
-            case 9:
-            case 10:
-                num_hits = 24;
-                break;
-            case 11:
-            case 12:
-                num_hits = 30;
-                break;
-            default:
-                num_hits = 0;
-        }
-        return num_hits;
-    }
-
-    function cluster40() {
-        var roll = randomInteger(6) + randomInteger(6);
-        var num_hits;
-        switch (roll) {
-            case 2:
-            case 3:
-                num_hits = 12;
-                break;
-            case 4:
-                num_hits = 18;
-                break;
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-                num_hits = 24;
-                break;
-            case 9:
-            case 10:
-                num_hits = 32;
-                break;
-            case 11:
-            case 12:
-                num_hits = 40;
-                break;
-            default:
-                num_hits = 0;
-        }
-        return num_hits;
-    }
-    
+   var HitsTable = {
+       2 : [ 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2],
+       3 : [ 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3],
+       4 : [ 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4],
+       5 : [ 1, 2, 2, 3, 3, 3, 3, 4, 4, 5, 5],
+       6 : [ 2, 2, 3, 3, 4, 4, 4, 5, 5, 6, 6],
+       7 : [ 2, 2, 3, 4, 4, 4, 4, 6, 6, 7, 7],
+       8 : [ 3, 3, 4, 4, 5, 5, 5, 6, 6, 8, 8],
+       9 : [ 3, 3, 4, 5, 5, 5, 5, 7, 7, 9, 9],
+       10: [ 3, 3, 4, 6, 6, 6, 6, 8, 8,10,10],
+       11: [ 4, 4, 5, 7, 7, 7, 7, 8, 8,11,11],
+       12: [ 4, 4, 5, 7, 7, 7, 7, 8, 8,12,12],
+       13: [ 4, 4, 5, 8, 8, 8, 8,11,11,13,13],
+       14: [ 5, 5, 6, 9, 9, 9, 9,11,11,14,14],
+       15: [ 5, 5, 6, 9, 9, 9, 9,12,12,15,15],
+       16: [ 5, 5, 7,10,10,10,10,13,13,16,16],
+       17: [ 5, 5, 7,10,10,10,10,14,14,17,17],
+       18: [ 6, 6, 8,11,11,11,11,14,14,18,18],
+       19: [ 6, 6, 8,11,11,11,11,15,15,19,19],
+       20: [ 6, 6, 9,12,12,12,12,16,16,20,20],
+       21: [ 7, 7, 9,13,13,13,13,17,17,21,21],
+       22: [ 7, 7, 9,14,14,14,14,18,18,22,22],
+       23: [ 7, 7,10,15,15,15,15,19,19,23,23],
+       24: [ 8, 8,10,16,16,16,16,20,20,24,24],
+       25: [ 8, 8,10,16,16,16,16,21,21,25,25],
+       26: [ 9, 9,11,17,17,17,17,21,21,26,26],
+       27: [ 9, 9,11,17,17,17,17,22,22,27,27],
+       28: [ 9, 9,11,17,17,17,17,23,23,28,28],
+       29: [10,10,12,18,18,18,18,23,23,29,29],
+       30: [10,10,12,18,18,18,18,24,24,30,30],
+       40: [12,12,18,24,24,24,24,32,32,40,40]
+   }
+   
+   function validHits(size){
+       if (size in HitsTable) return true;
+       return false;
+   }
+   
     function getClusterHits(shots) {
+        var roll = randomInteger(6) + randomInteger(6);
+        var hits;
         if (shots === null || _.isUndefined(shots)) return;
-        if (shots.indexOf("c02") === 0) {
-            return BTClusterHits.Cluster2();            
-        } else if (shots.indexOf("c03") === 0) {
-            return BTClusterHits.Cluster3();            
-        } else if (shots.indexOf("c04") === 0) {
-            return BTClusterHits.Cluster4();
-        } else if (shots.indexOf("c05") === 0) {
-            return BTClusterHits.Cluster5();
-        } else if (shots.indexOf("c06") === 0) {
-            return BTClusterHits.Cluster6();
-        } else if (shots.indexOf("c07") === 0) {
-            return BTClusterHits.Cluster7();
-        } else if (shots.indexOf("c09") === 0) {
-            return BTClusterHits.Cluster9();
-        } else if (shots.indexOf("c10") === 0) {
-            return BTClusterHits.Cluster10();
-        } else if (shots.indexOf("c12") === 0) {
-            return BTClusterHits.Cluster12();
-        } else if (shots.indexOf("c15") === 0) {
-            return BTClusterHits.Cluster15();
-        } else if (shots.indexOf("c20") === 0) {
-            return  BTClusterHits.Cluster20();
-        } else if (shots.indexOf("c30") === 0) {
-            return BTClusterHits.Cluster30();
-        } else if (shots.indexOf("c40") === 0) {
-            return  BTClusterHits.Cluster40();
+        if (validHits(shots)){
+            var HitScale = HitsTable[shots];
+            
+            hits = HitScale[roll-2];
         }
+        return hits;
     }
-	
-	return {
-		Cluster2: cluster2,
-		Cluster3: cluster3,
-		Cluster4: cluster4,
-		Cluster5: cluster5,
-		Cluster6: cluster6,
-		Cluster7: cluster7,
-		Cluster9: cluster9,
-		Cluster10: cluster10,
-		Cluster12: cluster12,
-		Cluster15: cluster15,
-		Cluster20: cluster20,
-		Cluster30: cluster30,
-		Cluster40: cluster40,
-		GetClusterHits: getClusterHits
+    
+    return {
+		GetClusterHits: getClusterHits,
+        ValidHits: validHits
 	};
 })();
 
 on("chat:message", function (msg) {
-    if (msg.type == "api") {
-        var hits, isCluster, numShots;
-        if (msg.content.indexOf("!c02") !== -1) {
-            numShots = 2;
-            hits = BTClusterHits.Cluster2();
-            isCluster = true;
-        } else if (msg.content.indexOf("!c03") !== -1) {
-            numShots = 3;
-            hits = BTClusterHits.Cluster3();
-            isCluster = true;
-        } else if (msg.content.indexOf("!c04") !== -1) {
-            numShots = 4;
-            hits = BTClusterHits.Cluster4();
-            isCluster = true;
-        } else if (msg.content.indexOf("!c05") !== -1) {
-            numShots = 5;
-            hits = BTClusterHits.Cluster5();
-            isCluster = true;
-        } else if (msg.content.indexOf("!c06") !== -1) {
-            numShots = 6;
-            hits = BTClusterHits.Cluster6();
-            isCluster = true;
-        } else if (msg.content.indexOf("!c07") !== -1) {
-            numShots = 7;
-            hits = BTClusterHits.Cluster7();
-            isCluster = true;
-        } else if (msg.content.indexOf("!c09") !== -1) {
-            numShots = 9;
-            hits = BTClusterHits.Cluster9();
-            isCluster = true;
-        } else if (msg.content.indexOf("!c10") !== -1) {
-            numShots = 10;
-            hits = BTClusterHits.Cluster10();
-            isCluster = true;
-        } else if (msg.content.indexOf("!c12") !== -1) {
-            numShots = 12;
-            hits = BTClusterHits.Cluster12();
-            isCluster = true;
-        } else if (msg.content.indexOf("!c15") !== -1) {
-            numShots = 15;
-            hits = BTClusterHits.Cluster15();
-            isCluster = true;
-        } else if (msg.content.indexOf("!c20") !== -1) {
-            numShots = 20;
-            hits = BTClusterHits.Cluster20();
-            isCluster = true;
-        } else if (msg.content.indexOf("!c30") !== -1) {
-            numShots = 30;
-            hits = BTClusterHits.Cluster30();
-            isCluster = true;
-        } else if (msg.content.indexOf("!c40") !== -1) {
-            numShots = 40;
-            hits = BTClusterHits.Cluster40();
-            isCluster = true;
+    if (msg.type == "api" && msg.content.indexOf("!ch") !== -1) {
+        var params = msg.content.split(" ");
+        
+        //Check and make sure they provided a cluster size
+        if (params.length < 2){
+            sendChat(msg.who, "Requires a cluster size!")
+            return;
         }
-
-        if (isCluster) {
-            var loc = msg.content.split(' ')[1].toLowerCase() || "f";
+        
+        //Extract Cluster Size
+        var size = params[1].toLowerCase();
+        
+        //If only cluster size is provided, just return total hits
+        if (params.length == 2){
+            var hits = BTClusterHits.GetClusterHits(size);
+            sendChat(msg.who, "\n" + size + " shots  with " + hits + " hits");
+            return;
+        }
+        
+        //If cluster size and arc are provided, also return damage locations
+        if (params.length == 3){
+        var arc = params[2].toLowerCase();
+        var hits;
+        hits = BTClusterHits.GetClusterHits(size);
+        //Check to see if the requested cluster size exists
+        if (BTClusterHits.ValidHits(size)) {
             var hitLocCallback, hitTarget;
-            switch (loc) {
-                case "l":
+            switch (arc) {
+                case "la":
                     hitLocCallback = BTHitLocation.ShootLeft(hits);
                     hitTarget = "Left arc";
                     break;
-                case "r":
+                case "ra":
                     hitLocCallback = BTHitLocation.ShootRight(hits);
                     hitTarget = "Right arc";
                     break;
-                case "f":
+                case "rr":
+                    hitLocCallback = BTHitLocation.ShootRear(hits);
+                    hitTarget = "Rear arc";
+                    break;
+                case "fa":
                 default:
                     hitLocCallback = BTHitLocation.ShootFront(hits);
-                    hitTarget = "Front/Back arc";
+                    hitTarget = "Front arc";
                     break;
             }
             var hist = {};           
-            hitLocCallback.forEach(function (a) { if (a in hist) hist[a] ++; else hist[a] = 1; })            
-            sendChat(msg.who, numShots + " shots to " + hitTarget + " with " + hits + " hits at: " + JSON.stringify(hist).replace(/\"/g, "").replace("{", "").replace("}", "").replace(/([\w]+):(\d)/g, "$2x $1"));       
+            hitLocCallback.forEach(function (a) { if (a in hist) hist[a] ++; else hist[a] = 1; });            
+            sendChat(msg.who, "\n" + size + " shots to " + hitTarget + " with " + hits + " hits at: " + 
+            JSON.stringify(hist)
+                .replace(/[\"{}]/g, "")                
+                .replace(/([\w]+):(\d)/g, "$2x $1"));   
         }
+    }
     }
 });
