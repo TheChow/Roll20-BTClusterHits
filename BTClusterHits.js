@@ -1,6 +1,8 @@
 var BTClusterHits = BTClusterHits || (function () {
+
+    var tc = 1000000;
     
-   var HitsTable = {
+    var HitsTable = {
        2 : [ 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2],
        3 : [ 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3],
        4 : [ 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4],
@@ -30,14 +32,14 @@ var BTClusterHits = BTClusterHits || (function () {
        28: [ 9, 9,11,17,17,17,17,23,23,28,28],
        29: [10,10,12,18,18,18,18,23,23,29,29],
        30: [10,10,12,18,18,18,18,24,24,30,30],
-       40: [12,12,18,24,24,24,24,32,32,40,40]
-   }
+       40: [12,12,18,24,24,24,24,32,32,40,40],
+       1 : [tc,tc,tc,tc,tc,tc,tc,tc,tc,tc,tc]
+   };
    
-   function validHits(size){
-       if (size in HitsTable) return true;
-       return false;
-   }
-   
+    function validHits(size) {
+        return (size in HitsTable);
+    }
+    
     function getClusterHits(shots) {
         var roll = randomInteger(6) + randomInteger(6);
         var hits;
@@ -51,18 +53,18 @@ var BTClusterHits = BTClusterHits || (function () {
     }
     
     return {
-		GetClusterHits: getClusterHits,
+    	GetClusterHits: getClusterHits,
         ValidHits: validHits
-	};
+    };
 })();
 
 on("chat:message", function (msg) {
     if (msg.type == "api" && msg.content.indexOf("!ch") !== -1) {
+        var hits;
         var params = msg.content.split(" ");
-        
         //Check and make sure they provided a cluster size
         if (params.length < 2){
-            sendChat(msg.who, "Requires a cluster size!")
+            sendChat(msg.who, "Requires a cluster size!");
             return;
         }
         
@@ -70,46 +72,48 @@ on("chat:message", function (msg) {
         var size = params[1].toLowerCase();
         
         //If only cluster size is provided, just return total hits
-        if (params.length == 2){
-            var hits = BTClusterHits.GetClusterHits(size);
+        if (params.length == 2) {
+            hits = BTClusterHits.GetClusterHits(size);
             sendChat(msg.who, "\n" + size + " shots  with " + hits + " hits");
             return;
         }
         
         //If cluster size and arc are provided, also return damage locations
-        if (params.length == 3){
-        var arc = params[2].toLowerCase();
-        var hits;
-        hits = BTClusterHits.GetClusterHits(size);
-        //Check to see if the requested cluster size exists
-        if (BTClusterHits.ValidHits(size)) {
-            var hitLocCallback, hitTarget;
-            switch (arc) {
-                case "la":
-                    hitLocCallback = BTHitLocation.ShootLeft(hits);
-                    hitTarget = "Left arc";
-                    break;
-                case "ra":
-                    hitLocCallback = BTHitLocation.ShootRight(hits);
-                    hitTarget = "Right arc";
-                    break;
-                case "rr":
-                    hitLocCallback = BTHitLocation.ShootRear(hits);
-                    hitTarget = "Rear arc";
-                    break;
-                case "fa":
-                default:
-                    hitLocCallback = BTHitLocation.ShootFront(hits);
-                    hitTarget = "Front arc";
-                    break;
+        if (params.length == 3) {
+            var arc = params[2].toLowerCase();
+            hits = BTClusterHits.GetClusterHits(size);
+            //Check to see if the requested cluster size exists
+            if (BTClusterHits.ValidHits(size)) {
+                var hitLocCallback, hitTarget;
+                switch (arc) {
+                    case "la":
+                        hitLocCallback = BTHitLocation.ShootLeft(hits);
+                        hitTarget = "Left arc";
+                        break;
+                    case "ra":
+                        hitLocCallback = BTHitLocation.ShootRight(hits);
+                        hitTarget = "Right arc";
+                        break;
+                    case "rr":
+                        hitLocCallback = BTHitLocation.ShootRear(hits);
+                        hitTarget = "Rear arc";
+                        break;
+                    case "fa":
+                    default:
+                        hitLocCallback = BTHitLocation.ShootFront(hits);
+                        hitTarget = "Front arc";
+                        break;
+                }
+                var hist = {};           
+                
+                hitLocCallback.forEach(function (a) { if (a in hist) hist[a] ++; else hist[a] = 1; });            
+                //log("[BTClusterHits]: " + JSON.stringify(hist));
+                sendChat(msg.who, "<br/>" + size + " shots to " + hitTarget + " with " + hits + " hits at: <br/>" + 
+                JSON.stringify(hist)
+                    .replace(/[\"{}]/g, "")                
+                    .replace(/([\w]+):(\d+)/g, "$2x $1")
+                    .replace(/,/g, ",<br/>"));   
             }
-            var hist = {};           
-            hitLocCallback.forEach(function (a) { if (a in hist) hist[a] ++; else hist[a] = 1; });            
-            sendChat(msg.who, "\n" + size + " shots to " + hitTarget + " with " + hits + " hits at: " + 
-            JSON.stringify(hist)
-                .replace(/[\"{}]/g, "")                
-                .replace(/([\w]+):(\d)/g, "$2x $1"));   
         }
-    }
     }
 });
