@@ -1,6 +1,6 @@
 var BTClusterHits = BTClusterHits || (function () {
 
-    var tc = 1000000;
+    var tc = 1000;
     
     var HitsTable = {
        2 : [ 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2],
@@ -52,9 +52,37 @@ var BTClusterHits = BTClusterHits || (function () {
         return hits;
     }
     
+    function getLoc(arc,size) {
+        var hitLocCallback, hitTarget;
+        var hitObj = {arc:"",locations:[]};
+        switch (arc) {
+            case "la":
+                hitLocCallback = BTHitLocation.ShootLeft(size);
+                hitTarget = "Left Arc";
+                break;
+            case "ra":
+                hitLocCallback = BTHitLocation.ShootRight(size);
+                hitTarget = "Right Arc";
+                break;
+            case "rr":
+                hitLocCallback = BTHitLocation.ShootRear(size);
+                hitTarget = "Rear Arc";
+                break;
+//            case "fa":
+            default:
+                hitLocCallback = BTHitLocation.ShootFront(size);
+                hitTarget = "Front Arc";
+                break;
+        }
+        hitObj.arc = hitTarget;
+        hitObj.locations = hitLocCallback;
+        return hitObj;
+    }
+    
     return {
-    	GetClusterHits: getClusterHits,
-        ValidHits: validHits
+        GetClusterHits: getClusterHits,
+        ValidHits: validHits,
+        GetLoc: getLoc
     };
 })();
 
@@ -62,58 +90,75 @@ on("chat:message", function (msg) {
     if (msg.type == "api" && msg.content.indexOf("!ch") !== -1) {
         var hits;
         var params = msg.content.split(" ");
+        var hitReport = "";
         //Check and make sure they provided a cluster size
-        if (params.length < 2){
-            sendChat(msg.who, "Requires a cluster size!");
-            return;
-        }
+            if (params.length < 2){
+                hitReport = "Requires a cluster size!<br/>" + hitReport;
+                return;
+            }
         
         //Extract Cluster Size
-        var size = params[1].toLowerCase();
+        var size = parseInt(params[1]);
         
         //If only cluster size is provided, just return total hits
-        if (params.length == 2) {
-            hits = BTClusterHits.GetClusterHits(size);
-            sendChat(msg.who, "\n" + size + " shots  with " + hits + " hits");
-            return;
-        }
+            if (params.length == 2) {
+                hits = BTClusterHits.GetClusterHits(size);
+                sendChat(msg.who, "\n" + size + " shots  with " + hits + " hits");
+                return;
+            }
         
         //If cluster size and arc are provided, also return damage locations
-        if (params.length == 3) {
-            var arc = params[2].toLowerCase();
-            hits = BTClusterHits.GetClusterHits(size);
-            //Check to see if the requested cluster size exists
-            if (BTClusterHits.ValidHits(size)) {
-                var hitLocCallback, hitTarget;
-                switch (arc) {
-                    case "la":
-                        hitLocCallback = BTHitLocation.ShootLeft(hits);
-                        hitTarget = "Left arc";
-                        break;
-                    case "ra":
-                        hitLocCallback = BTHitLocation.ShootRight(hits);
-                        hitTarget = "Right arc";
-                        break;
-                    case "rr":
-                        hitLocCallback = BTHitLocation.ShootRear(hits);
-                        hitTarget = "Rear arc";
-                        break;
-                    case "fa":
-                    default:
-                        hitLocCallback = BTHitLocation.ShootFront(hits);
-                        hitTarget = "Front arc";
-                        break;
+            if (params.length >= 3) {
+                var arc = params[2].toLowerCase();
+                //Default grouping of 1
+                var grouping = 1;
+                if (params.length > 3){
+                    grouping = (parseInt(params[3]));
+                    if (_.isNaN(grouping)) {
+                        hitReport = "Grouping is invalid: " + params[3] +"<br/>"+ hitReport;
+                    }
+                    else {
+                        grouping = parseInt(params[3]);
+                    }
                 }
-                var hist = {};           
-                
-                hitLocCallback.forEach(function (a) { if (a in hist) hist[a] ++; else hist[a] = 1; });            
-                //log("[BTClusterHits]: " + JSON.stringify(hist));
-                sendChat(msg.who, "<br/>" + size + " shots to " + hitTarget + " with " + hits + " hits at: <br/>" + 
-                JSON.stringify(hist)
-                    .replace(/[\"{}]/g, "")                
-                    .replace(/([\w]+):(\d+)/g, "$2x $1")
-                    .replace(/,/g, ",<br/>"));   
+                //Check to see if the requested cluster size exists
+                if (BTClusterHits.ValidHits(size) && !(_.isNaN(grouping))) {
+                    hits = BTClusterHits.GetClusterHits(size);
+                    var groupedHits = BTClusterHits.GetLoc(arc, Math.floor(hits/grouping));
+                    
+                    //Math is fun
+                    var remainderHits = BTClusterHits.GetLoc(arc, Math.ceil(hits%grouping/grouping));
+                    
+                    var groupedHist = {};           
+                    var remainderHist = {};
+                    
+                    hitReport = "<br/>" + size + " shots to " + groupedHits.arc + " with " + hits + " hits at:";
+                    for (var loc in groupedHits.locations){
+                        hitReport = hitReport.concat( "<br/>"+ grouping + " damage to " + groupedHits.locations[loc]);
+                    }
+                    for (var loc in remainderHits.locations){
+                        hitReport = hitReport.concat( "<br/>"+hits%grouping + " damage to " + remainderHits.locations[loc]);
+                    }
+                    
+                    //.sort() the hit locations before running the histograms
+                    //.sort alters the ordering so this must be done after outputting unordered list
+                    groupedHits.locations.sort().forEach(function (a) { if (a in groupedHist) groupedHist[a] ++; else groupedHist[a] = 1; });            
+                    remainderHits.locations.sort().forEach(function (a) { if (a in remainderHist) remainderHist[a] ++; else remainderHist[a] = 1; });            
+                    hitReport = hitReport.concat("<br/><hr/>Summary:<br/>");
+                    log(groupedHist)
+                    hitReport = hitReport.concat(JSON.stringify(groupedHist)
+                        .replace(/[\"{}]/g, "")              
+                        .replace(/([\w\s]+):(\d+)/g, "$2x" +grouping + " $1")
+                        .replace(/,/g, ",<br/>"));
+                    hitReport = hitReport.concat("<br/>"+JSON.stringify(remainderHist)
+                        .replace(/[\"{}]/g, "")              
+                        .replace(/([\w\s]+):(\d+)/g, "$2x" +hits%grouping + " $1")
+                        .replace(/,/g, ",<br/>"));
+                }
+                else {
+                    hitReport =  "Invalid Cluster Size: " + params[2] +"<br/>"+ hitReport;
+                }
             }
+            sendChat(msg.who, hitReport);
         }
-    }
-});
+    });
